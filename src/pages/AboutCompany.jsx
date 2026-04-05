@@ -1,45 +1,35 @@
 import React, { useEffect, useState } from "react";
+import { Typography, Image } from "antd";
 import { client, urlFor } from "../sanityClient";
-import { Typography, Spin, Alert, Image } from "antd";
-
-const { Title, Paragraph } = Typography;
+import { useTranslation } from "react-i18next";
 
 export default function AboutCompany() {
   const [company, setCompany] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { i18n } = useTranslation();
+  const lang = i18n.language;
 
   useEffect(() => {
-    client
-      .fetch('*[_type == "aboutCompany"][0]')
-      .then((data) => {
-        setCompany(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
+    client.fetch('*[_type == "aboutCompany"][0]').then(setCompany);
   }, []);
 
-  if (loading)
-    return (
-      <Spin size="large" style={{ display: "block", margin: "50px auto" }} />
-    );
-  if (error)
-    return <Alert message="Ошибка" description={error} type="error" showIcon />;
+  if (!company) return null;
 
   return (
-    <div style={{ padding: 20, maxWidth: 800, margin: "0 auto" }}>
-      <Title level={2}>{company.title}</Title>
+    <div style={{ textAlign: "center", padding: "20px 0" }}>
+      <Typography.Title level={2}>
+        {company[`title_${lang}`] || company.title_ru}
+      </Typography.Title>
       {company.image && (
         <Image
-          src={urlFor(company.image).width(600).url()}
-          alt={company.title}
-          style={{ marginBottom: 20 }}
+          src={urlFor(company.image).width(800).url()}
+          style={{ borderRadius: 12, marginBottom: 20, maxWidth: 600 }}
         />
       )}
-      <Paragraph>{company.description}</Paragraph>
+      <Typography.Paragraph
+        style={{ fontSize: 16, maxWidth: 800, margin: "0 auto" }}
+      >
+        {company[`description_${lang}`] || company.description_ru}
+      </Typography.Paragraph>
     </div>
   );
 }

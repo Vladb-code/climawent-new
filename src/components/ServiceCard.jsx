@@ -1,84 +1,60 @@
 import React, { useState } from "react";
-import { Card, Modal, Button } from "antd";
+import { Card, Modal, Carousel, Typography } from "antd";
 import { urlFor } from "../sanityClient";
+import { PortableText } from "@portabletext/react";
+import { useTranslation } from "react-i18next";
 
 export default function ServiceCard({ item }) {
   const [open, setOpen] = useState(false);
+  const { i18n } = useTranslation();
+  const lang = i18n.language;
 
-  const descriptionText =
-    item.description ||
-    item.content?.[0]?.children?.[0]?.text ||
-    "Нет описания";
+  const images = item.images
+    ? [item.mainImage, ...item.images]
+    : [item.mainImage];
 
-  // Собираем все изображения: mainImage + images
-  const images = [];
-  if (item.mainImage) images.push(item.mainImage);
-  if (item.images?.length) images.push(...item.images);
+  const displayTitle = item[`title_${lang}`] || item.title_ru || "No Title";
+  const displayDescription =
+    item[`description_${lang}`] || item.description_ru || "";
 
   return (
     <>
       <Card
         hoverable
         cover={
-          images[0] ? (
-            <img
-              alt={item.title}
-              src={urlFor(images[0]).width(400).height(250).url()}
-              style={{ objectFit: "cover", height: 200 }}
-            />
-          ) : (
-            <div style={{ height: 200, background: "#eee" }} />
-          )
+          <img
+            src={urlFor(item.mainImage).width(400).url()}
+            style={{ height: 200, objectFit: "cover" }}
+          />
         }
         onClick={() => setOpen(true)}
-        style={{ borderRadius: 12 }}
       >
-        <Card.Meta
-          title={item.title}
-          description={
-            <>
-              <p style={{ color: "#666" }}>{descriptionText}</p>
-              {item.price && (
-                <p style={{ fontWeight: "bold" }}>{item.price} ₾</p>
-              )}
-            </>
-          }
-        />
-        <Button
-          type="primary"
-          onClick={() => setOpen(true)}
-          style={{ marginTop: 10 }}
-        >
-          Подробнее
-        </Button>
+        <Card.Meta title={displayTitle} description={displayDescription} />
       </Card>
 
       <Modal
-        title={item.title}
+        title={displayTitle}
         open={open}
         onCancel={() => setOpen(false)}
         footer={null}
-        width={800}
+        width={750}
+        centered
       >
-        {/* Показываем все изображения */}
-        {images.map((img, idx) => (
-          <img
-            key={idx}
-            src={urlFor(img).width(600).url()}
-            alt={`${item.title} ${idx + 1}`}
-            style={{ width: "100%", marginBottom: 15, borderRadius: 8 }}
-          />
-        ))}
-
-        <p>{descriptionText}</p>
-        {item.price && <p style={{ fontWeight: "bold" }}>{item.price} ₾</p>}
-
-        {item.content && (
-          <div>
-            {item.content.map((block, i) => (
-              <p key={i}>{block.children?.map((c) => c.text).join(" ")}</p>
-            ))}
-          </div>
+        <Carousel arrows style={{ background: "#f0f0f0", marginBottom: 20 }}>
+          {images.filter(Boolean).map((img, i) => (
+            <div key={i}>
+              <img
+                src={urlFor(img).width(800).url()}
+                style={{ width: "100%" }}
+              />
+            </div>
+          ))}
+        </Carousel>
+        <PortableText value={item.content} />
+        {item.price && (
+          <Typography.Paragraph style={{ marginTop: 20 }}>
+            <strong>Цена:</strong> {item.price}
+          </Typography.Paragraph>
         )}
       </Modal>
     </>

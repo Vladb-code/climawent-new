@@ -1,16 +1,12 @@
 import React from "react";
+import { Layout } from "antd";
 
 export default function Footer() {
   return (
-    <footer
-      style={{
-        textAlign: "center",
-        padding: 15,
-        borderTop: "1px solid #ddd",
-        marginTop: 50,
-      }}
+    <Layout.Footer
+      style={{ textAlign: "center", background: "#f0f2f5", marginTop: 50 }}
     >
-      &copy; 2026 Clima Went Georgia. Все права защищены.
-    </footer>
+      © {new Date().getFullYear()} Clima Went Georgia. Все права защищены.
+    </Layout.Footer>
   );
 }
