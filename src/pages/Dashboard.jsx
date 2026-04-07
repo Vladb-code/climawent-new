@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Input, Tabs, Spin, Typography, Divider } from "antd";
 import { client } from "../sanityClient";
 import ServiceCard from "../components/ServiceCard";
-import AboutCompany from "../components/AboutCompany";
+import AboutCompany from "./AboutCompany";
 import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
