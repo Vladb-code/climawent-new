@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Input, Tabs, Divider, Spin, Typography, Button } from "antd";
+import { Row, Col, Input, Tabs, Spin, Typography } from "antd";
 import { client } from "../sanityClient";
 import ServiceCard from "../components/ServiceCard";
 import AboutCompany from "./AboutCompany";
@@ -7,17 +7,13 @@ import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
   const { t, i18n } = useTranslation();
-  const lang = i18n.language;
-
   const [data, setData] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     client
-      .fetch(
-        '*[_type in ["installation","serviceMaintenance","repair","cleaning","contract","portfolio"]] | order(_createdAt desc)',
-      )
+      .fetch('*[_type in ["service", "portfolio"]] | order(_createdAt desc)')
       .then((res) => {
         setData(res);
         setFiltered(res);
@@ -28,16 +24,16 @@ export default function Dashboard() {
   const onSearch = (val) => {
     const s = val.toLowerCase();
     setFiltered(
-      data.filter(
-        (i) =>
-          (i[`title_${lang}`] || "").toLowerCase().includes(s) ||
-          (i[`description_${lang}`] || "").toLowerCase().includes(s),
+      data.filter((i) =>
+        (i[`title_${i18n.language}`] || i.title_ru || "")
+          .toLowerCase()
+          .includes(s),
       ),
     );
   };
 
   const renderGrid = (items) => (
-    <Row gutter={[20, 20]} style={{ marginTop: 20 }}>
+    <Row gutter={[16, 16]} style={{ marginTop: 20 }}>
       {items.map((item) => (
         <Col xs={24} sm={12} md={8} lg={6} key={item._id}>
           <ServiceCard item={item} />
@@ -46,40 +42,20 @@ export default function Dashboard() {
     </Row>
   );
 
-  if (loading)
-    return (
-      <Spin size="large" style={{ display: "block", margin: "100px auto" }} />
-    );
+  if (loading) return <Spin size="large" className="loader" />;
 
   return (
-    <div>
-      <section
-        style={{
-          background: "linear-gradient(135deg, #0050b3 0%, #1890ff 100%)",
-          padding: "80px 20px 120px 20px",
-          textAlign: "center",
-          color: "#fff",
-        }}
-      >
-        <Typography.Title
-          style={{ color: "#fff", fontSize: "clamp(28px, 5vw, 48px)" }}
-        >
+    <div className="fade-in">
+      <div className="hero">
+        <Typography.Title style={{ color: "#fff" }}>
           {t("hero_title")}
         </Typography.Title>
-        <Typography.Paragraph
-          style={{
-            color: "rgba(255,255,255,0.9)",
-            fontSize: 18,
-            marginBottom: 30,
-          }}
-        >
+        <Typography.Paragraph style={{ color: "#fff", opacity: 0.9 }}>
           {t("hero_sub")}
         </Typography.Paragraph>
-      </section>
+      </div>
 
-      <div
-        style={{ maxWidth: 800, margin: "-40px auto 40px", padding: "0 20px" }}
-      >
+      <div className="search-box">
         <Input.Search
           placeholder={t("search_placeholder")}
           enterButton
@@ -89,48 +65,35 @@ export default function Dashboard() {
         />
       </div>
 
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
+      <div className="container">
         <Tabs
           centered
           size="large"
           items={[
+            { key: "1", label: t("tabs_all"), children: renderGrid(filtered) },
             {
-              key: "all",
-              label: t("tabs_all"),
-              children: renderGrid(filtered),
-            },
-            {
-              key: "installation",
+              key: "2",
               label: t("tabs_inst"),
               children: renderGrid(
-                filtered.filter((i) => i._type === "installation"),
+                filtered.filter((i) => i.category === "installation"),
               ),
             },
             {
-              key: "service",
+              key: "3",
               label: t("tabs_service"),
               children: renderGrid(
-                filtered.filter((i) =>
-                  ["serviceMaintenance", "repair"].includes(i._type),
-                ),
+                filtered.filter((i) => i.category === "repair"),
               ),
             },
             {
-              key: "cleaning",
+              key: "4",
               label: t("tabs_cleaning"),
               children: renderGrid(
-                filtered.filter((i) => i._type === "cleaning"),
+                filtered.filter((i) => i.category === "cleaning"),
               ),
             },
             {
-              key: "contracts",
-              label: t("tabs_contracts"),
-              children: renderGrid(
-                filtered.filter((i) => i._type === "contract"),
-              ),
-            },
-            {
-              key: "portfolio",
+              key: "5",
               label: t("tabs_portfolio"),
               children: renderGrid(
                 filtered.filter((i) => i._type === "portfolio"),
@@ -138,7 +101,6 @@ export default function Dashboard() {
             },
           ]}
         />
-        <Divider style={{ margin: "60px 0" }} />
         <AboutCompany />
       </div>
     </div>

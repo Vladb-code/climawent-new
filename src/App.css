@@ -1,58 +1,64 @@
-.hero {
-  background: linear-gradient(135deg, #0050b3 0%, #1890ff 100%);
-  padding: 80px 20px 120px;
-  text-align: center;
-  color: #fff;
-}
-
-.hero-btn {
-  background: #52c41a;
-  border: none;
-  height: 50px;
-  padding: 0 40px;
-}
-
-.search-box {
-  max-width: 800px;
-  margin: -40px auto 40px;
-  padding: 0 20px;
-}
-
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 15px;
+}
+.hero {
+  background: linear-gradient(135deg, #0050b3, #1890ff);
+  padding: 60px 20px;
+  text-align: center;
+  color: white;
+}
+.search-box {
+  max-width: 600px;
+  margin: -30px auto 30px;
+  padding: 0 15px;
+}
+.loader {
+  display: block;
+  margin: 100px auto;
 }
 
-/* Карточки */
+.nav-desktop {
+  display: flex;
+}
+.nav-mobile-btn {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .nav-desktop {
+    display: none;
+  }
+  .nav-mobile-btn {
+    display: block;
+  }
+  .hero {
+    padding: 40px 15px;
+  }
+  .ant-tabs-nav-list {
+    width: 100%;
+    justify-content: space-around;
+  }
+}
+
 .service-card {
-  border-radius: 16px !important;
+  border-radius: 12px;
   overflow: hidden;
+  height: 100%;
+  transition: 0.3s;
 }
-
+.service-card:hover {
+  transform: translateY(-5px);
+}
 .service-img {
   height: 200px;
   object-fit: cover;
+  width: 100%;
 }
-
 .price {
   margin-top: 10px;
-  font-weight: bold;
   color: #1890ff;
-}
-
-/* 📱 Мобилка */
-@media (max-width: 768px) {
-  .hero {
-    padding: 60px 15px 100px;
-  }
-
-  .hero-btn {
-    width: 100%;
-    max-width: 300px;
-  }
-
-  .service-img {
-    height: 160px;
-  }
+  font-weight: 800;
+  font-size: 16px;
 }

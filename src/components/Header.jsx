@@ -10,22 +10,12 @@ export default function Header() {
 
   const menuItems = [
     { label: <Link to="/">{t("nav_home")}</Link>, key: "1" },
-    { label: <Link to="/about">{t("nav_about")}</Link>, key: "2" },
-    {
-      label: <Link to="/installation">{t("nav_installation")}</Link>,
-      key: "3",
-    },
-    {
-      label: <Link to="/service-maintenance">{t("nav_service")}</Link>,
-      key: "4",
-    },
-    { label: <Link to="/cleaning">{t("nav_cleaning")}</Link>, key: "5" },
-    { label: <Link to="/contracts">{t("nav_contracts")}</Link>, key: "6" },
     { label: <Link to="/portfolio">{t("nav_portfolio")}</Link>, key: "7" },
   ];
 
   return (
     <Layout.Header
+      className="header-nav"
       style={{
         background: "rgba(255, 255, 255, 0.9)",
         backdropFilter: "blur(10px)",
@@ -36,8 +26,8 @@ export default function Header() {
         position: "sticky",
         top: 0,
         zIndex: 1000,
-        borderBottom: "1px solid rgba(0,0,0,0.05)",
         height: 70,
+        borderBottom: "1px solid #f0f0f0",
       }}
     >
       <Typography.Title
@@ -47,20 +37,20 @@ export default function Header() {
         CLIMA<span style={{ color: "#1890ff" }}>WENT</span>
       </Typography.Title>
 
-      <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
         <div className="nav-desktop">
           <Menu
             mode="horizontal"
             items={menuItems}
-            style={{ border: "none", background: "transparent" }}
+            style={{ border: "none", minWidth: 200 }}
           />
         </div>
 
         <Select
           defaultValue={i18n.language}
-          onChange={(value) => i18n.changeLanguage(value)}
+          onChange={(val) => i18n.changeLanguage(val)}
           suffixIcon={<GlobalOutlined />}
-          style={{ width: 80 }}
+          style={{ width: 70 }}
           options={[
             { value: "ru", label: "RU" },
             { value: "ka", label: "GE" },
@@ -76,24 +66,18 @@ export default function Header() {
         />
       </div>
 
-      <Drawer title={t("nav_home")} onClose={() => setOpen(false)} open={open}>
+      <Drawer
+        title="Menu"
+        onClose={() => setOpen(false)}
+        open={open}
+        width={250}
+      >
         <Menu
           mode="vertical"
           items={menuItems}
           onClick={() => setOpen(false)}
         />
       </Drawer>
-
-      <style>{`
-        @media (max-width: 768px) { 
-          .nav-desktop { display: none; } 
-          .nav-mobile-btn { display: block; } 
-        }
-        @media (min-width: 769px) { 
-          .nav-desktop { display: flex; } 
-          .nav-mobile-btn { display: none; } 
-        }
-      `}</style>
     </Layout.Header>
   );
 }
