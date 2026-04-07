@@ -62,7 +62,7 @@ export default function Header() {
           <Menu
             mode="horizontal"
             items={menuItems}
-            style={{ border: "none", background: "transparent", minWidth: 280 }}
+            style={{ border: "none", background: "transparent" }}
           />
         </div>
 

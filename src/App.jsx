@@ -12,7 +12,10 @@ export default function App() {
         <Header />
         <Layout.Content>
           <Routes>
+            {/* Базовый путь для GitHub Pages */}
             <Route path="/" element={<Dashboard />} />
+            {/* Обработка случая, если путь не найден (редирект на главную) */}
+            <Route path="*" element={<Dashboard />} />
           </Routes>
         </Layout.Content>
         <Footer />
