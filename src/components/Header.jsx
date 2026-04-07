@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Layout, Menu, Button, Drawer, Typography, Select } from "antd";
 import { MenuOutlined, GlobalOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 export default function Header() {
@@ -9,15 +8,36 @@ export default function Header() {
   const { t, i18n } = useTranslation();
 
   const menuItems = [
-    { label: <Link to="/">{t("nav_home")}</Link>, key: "1" },
-    { label: <Link to="/portfolio">{t("nav_portfolio")}</Link>, key: "7" },
+    {
+      label: (
+        <a href="#services" onClick={() => setOpen(false)}>
+          {t("nav_home")}
+        </a>
+      ),
+      key: "1",
+    },
+    {
+      label: (
+        <a href="#portfolio" onClick={() => setOpen(false)}>
+          {t("nav_portfolio")}
+        </a>
+      ),
+      key: "7",
+    },
+    {
+      label: (
+        <a href="#about" onClick={() => setOpen(false)}>
+          {t("nav_about")}
+        </a>
+      ),
+      key: "8",
+    },
   ];
 
   return (
     <Layout.Header
-      className="header-nav"
       style={{
-        background: "rgba(255, 255, 255, 0.9)",
+        background: "rgba(255, 255, 255, 0.95)",
         backdropFilter: "blur(10px)",
         display: "flex",
         justifyContent: "space-between",
@@ -42,7 +62,7 @@ export default function Header() {
           <Menu
             mode="horizontal"
             items={menuItems}
-            style={{ border: "none", minWidth: 200 }}
+            style={{ border: "none", background: "transparent", minWidth: 280 }}
           />
         </div>
 
@@ -66,17 +86,8 @@ export default function Header() {
         />
       </div>
 
-      <Drawer
-        title="Menu"
-        onClose={() => setOpen(false)}
-        open={open}
-        width={250}
-      >
-        <Menu
-          mode="vertical"
-          items={menuItems}
-          onClick={() => setOpen(false)}
-        />
+      <Drawer title="Меню" onClose={() => setOpen(false)} open={open}>
+        <Menu mode="vertical" items={menuItems} />
       </Drawer>
     </Layout.Header>
   );

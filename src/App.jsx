@@ -7,19 +7,15 @@ import WhatsAppButton from "./components/WhatsAppButton";
 
 export default function App() {
   return (
-    <Router>
-      <Layout>
+    <Router basename="/climawent-new">
+      <Layout style={{ minHeight: "100vh", background: "#fff" }}>
         <Header />
-
         <Layout.Content>
           <Routes>
             <Route path="/" element={<Dashboard />} />
           </Routes>
         </Layout.Content>
-
         <Footer />
-
-        {/* ВОТ СЮДА */}
         <WhatsAppButton />
       </Layout>
     </Router>
