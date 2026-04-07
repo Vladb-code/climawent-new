@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Image, Spin } from "antd";
+import { Typography, Image, Divider } from "antd";
 import { client, urlFor } from "../sanityClient";
 import { useTranslation } from "react-i18next";
 
@@ -15,7 +15,7 @@ export default function AboutCompany() {
   if (!company) return null;
 
   return (
-    <div style={{ textAlign: "center", padding: "40px 0" }}>
+    <div style={{ textAlign: "center", padding: "20px 0" }}>
       <Typography.Title level={2}>
         {company[`title_${lang}`] || company.title_ru}
       </Typography.Title>
@@ -23,8 +23,8 @@ export default function AboutCompany() {
         <Image
           src={urlFor(company.image).width(800).url()}
           style={{
-            borderRadius: 16,
-            marginBottom: 30,
+            borderRadius: 12,
+            marginBottom: 20,
             maxWidth: "100%",
             height: "auto",
           }}
@@ -35,7 +35,7 @@ export default function AboutCompany() {
           fontSize: 18,
           maxWidth: 800,
           margin: "0 auto",
-          lineHeight: "1.8",
+          lineHeight: 1.6,
         }}
       >
         {company[`description_${lang}`] || company.description_ru}

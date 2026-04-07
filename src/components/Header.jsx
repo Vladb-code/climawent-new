@@ -62,7 +62,7 @@ export default function Header() {
           <Menu
             mode="horizontal"
             items={menuItems}
-            style={{ border: "none", background: "transparent" }}
+            style={{ border: "none", background: "transparent", minWidth: 280 }}
           />
         </div>
 
@@ -86,7 +86,12 @@ export default function Header() {
         />
       </div>
 
-      <Drawer title="Меню" onClose={() => setOpen(false)} open={open}>
+      <Drawer
+        title="Меню"
+        onClose={() => setOpen(false)}
+        open={open}
+        width={250}
+      >
         <Menu mode="vertical" items={menuItems} />
       </Drawer>
     </Layout.Header>

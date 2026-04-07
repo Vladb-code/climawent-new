@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Input, Tabs, Spin, Typography, Divider } from "antd";
 import { client } from "../sanityClient";
 import ServiceCard from "../components/ServiceCard";
-import AboutCompany from "./AboutCompany";
+import AboutCompany from "../components/AboutCompany";
 import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
@@ -12,11 +12,14 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Тянем все услуги, старые типы и портфолио
     client
-      .fetch('*[_type in ["service", "portfolio"]] | order(_createdAt desc)')
+      .fetch(
+        '*[_type in ["service", "portfolio", "installation", "cleaning", "repair", "contract"]] | order(_createdAt desc)',
+      )
       .then((res) => {
-        setData(res);
-        setFiltered(res);
+        setData(res || []);
+        setFiltered(res || []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -33,7 +36,7 @@ export default function Dashboard() {
       ) : (
         <Col span={24} style={{ textAlign: "center", padding: "40px 0" }}>
           <Typography.Text type="secondary">
-            В этом разделе пока нет данных
+            Нет данных в этом разделе
           </Typography.Text>
         </Col>
       )}
@@ -47,8 +50,8 @@ export default function Dashboard() {
 
   return (
     <div className="fade-in">
-      {/* Исправленная Hero-секция */}
       <section
+        className="hero"
         style={{
           background: "linear-gradient(135deg, #0050b3 0%, #1890ff 100%)",
           padding: "80px 20px",
@@ -70,7 +73,10 @@ export default function Dashboard() {
         </Typography.Paragraph>
       </section>
 
-      <div className="search-box">
+      <div
+        className="search-box"
+        style={{ maxWidth: 600, margin: "-30px auto 30px", padding: "0 15px" }}
+      >
         <Input.Search
           placeholder={t("search_placeholder")}
           enterButton
@@ -89,7 +95,6 @@ export default function Dashboard() {
       </div>
 
       <div className="container">
-        {/* Услуги */}
         <div id="services">
           <Tabs
             centered
@@ -99,28 +104,54 @@ export default function Dashboard() {
                 key: "all",
                 label: t("tabs_all"),
                 children: renderGrid(
-                  filtered.filter((i) => i._type === "service"),
+                  filtered.filter(
+                    (i) =>
+                      i._type === "service" ||
+                      [
+                        "installation",
+                        "cleaning",
+                        "repair",
+                        "contract",
+                      ].includes(i._type),
+                  ),
                 ),
               },
               {
                 key: "inst",
                 label: t("tabs_inst"),
                 children: renderGrid(
-                  filtered.filter((i) => i.category === "installation"),
+                  filtered.filter(
+                    (i) =>
+                      i.category === "installation" ||
+                      i._type === "installation",
+                  ),
                 ),
               },
               {
                 key: "rep",
                 label: t("tabs_service"),
                 children: renderGrid(
-                  filtered.filter((i) => i.category === "repair"),
+                  filtered.filter(
+                    (i) => i.category === "repair" || i._type === "repair",
+                  ),
                 ),
               },
               {
                 key: "cln",
                 label: t("tabs_cleaning"),
                 children: renderGrid(
-                  filtered.filter((i) => i.category === "cleaning"),
+                  filtered.filter(
+                    (i) => i.category === "cleaning" || i._type === "cleaning",
+                  ),
+                ),
+              },
+              {
+                key: "cnt",
+                label: t("tabs_contracts"),
+                children: renderGrid(
+                  filtered.filter(
+                    (i) => i.category === "contract" || i._type === "contract",
+                  ),
                 ),
               },
             ]}
@@ -129,8 +160,7 @@ export default function Dashboard() {
 
         <Divider style={{ margin: "60px 0" }} />
 
-        {/* Портфолио */}
-        <div id="portfolio" style={{ paddingTop: 20 }}>
+        <div id="portfolio">
           <Typography.Title
             level={2}
             style={{ textAlign: "center", marginBottom: 30 }}
@@ -142,7 +172,6 @@ export default function Dashboard() {
 
         <Divider style={{ margin: "60px 0" }} />
 
-        {/* О компании */}
         <div id="about">
           <AboutCompany />
         </div>

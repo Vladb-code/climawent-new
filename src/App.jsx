@@ -1,3 +1,4 @@
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Layout } from "antd";
 import Header from "./components/Header";
@@ -12,9 +13,7 @@ export default function App() {
         <Header />
         <Layout.Content>
           <Routes>
-            {/* Базовый путь для GitHub Pages */}
             <Route path="/" element={<Dashboard />} />
-            {/* Обработка случая, если путь не найден (редирект на главную) */}
             <Route path="*" element={<Dashboard />} />
           </Routes>
         </Layout.Content>
