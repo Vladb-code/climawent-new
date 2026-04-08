@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Typography, Spin, Tabs, ConfigProvider } from "antd";
 import { client } from "../sanityClient";
 import ServiceGrid from "../components/ServiceGrid";
-import AboutCompany from "../components/AboutCompany.jsx";
+import AboutCompany from "./AboutCompany.jsx";
 import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
@@ -67,6 +67,7 @@ export default function Dashboard() {
       </section>
 
       <div className="main-content-card">
+        {/* Блок Услуг */}
         <div id="services">
           <ConfigProvider theme={{ token: { colorPrimary: "#1890ff" } }}>
             <Tabs
@@ -75,10 +76,12 @@ export default function Dashboard() {
               centered={false}
               size="middle"
               tabBarGutter={20}
+              className="custom-tabs"
             />
           </ConfigProvider>
         </div>
 
+        {/* Блок Портфолио */}
         <div id="portfolio" style={{ padding: "60px 0 20px" }}>
           <Typography.Title
             level={3}
@@ -89,7 +92,8 @@ export default function Dashboard() {
           <ServiceGrid items={getItems("portfolio").slice(0, 4)} />
         </div>
 
-        <div id="contracts" style={{ padding: "40px 0" }}>
+        {/* Блок Контракты */}
+        <div id="contracts" style={{ padding: "60px 0 20px" }}>
           <Typography.Title
             level={3}
             style={{ textAlign: "center", marginBottom: 25 }}
@@ -99,6 +103,7 @@ export default function Dashboard() {
           <ServiceGrid items={getItems("contract")} />
         </div>
 
+        {/* Блок О компании */}
         <div id="about" style={{ padding: "40px 0" }}>
           <AboutCompany />
         </div>

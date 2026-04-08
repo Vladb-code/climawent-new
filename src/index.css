@@ -3,6 +3,11 @@
   --dark-blue: #003a8c;
 }
 
+/* Плавная прокрутка к якорям */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   font-family: "Inter", sans-serif;
@@ -10,7 +15,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Hero */
 .hero {
   background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary) 100%);
   color: white;
@@ -27,30 +31,28 @@ body {
   z-index: 10;
 }
 
-/* Скрытие меню на мобилках */
-.nav-mobile-btn {
-  display: none;
-}
-
+/* Адаптивность Шапки */
 @media (max-width: 768px) {
   .nav-desktop {
     display: none !important;
   }
   .nav-mobile-btn {
-    display: block !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
   }
 
-  /* Исправляем табы, чтобы можно было листать */
-  .ant-tabs-nav-wrap {
+  /* Табы: включаем горизонтальную прокрутку, если не влезают */
+  .custom-tabs .ant-tabs-nav-wrap {
     overflow-x: auto !important;
+    display: block !important;
   }
-  .ant-tabs-nav-list {
-    display: flex !important;
+  .custom-tabs .ant-tabs-nav-list {
     white-space: nowrap !important;
+    display: flex !important;
   }
 }
 
-/* Карточки */
 .service-card {
   border-radius: 12px;
   overflow: hidden;
