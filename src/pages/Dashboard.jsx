@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Typography, Spin, Tabs, ConfigProvider } from "antd";
 import { client } from "../sanityClient";
 import ServiceGrid from "../components/ServiceGrid";
-import AboutCompany from "../components/AboutCompany";
+import AboutCompany from "./AboutCompany";
 import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
