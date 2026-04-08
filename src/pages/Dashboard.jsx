@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Spin, Divider } from "antd";
+import { Typography, Spin, Tabs, ConfigProvider } from "antd";
 import { client } from "../sanityClient";
 import ServiceGrid from "../components/ServiceGrid";
-import AboutCompany from "./AboutCompany";
+import AboutCompany from "../components/AboutCompany";
 import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
@@ -16,7 +16,7 @@ export default function Dashboard() {
         `*[_type in ["service", "portfolio", "contract"]] | order(_createdAt desc)`,
       )
       .then((res) => {
-        setData(res);
+        setData(res || []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -27,46 +27,87 @@ export default function Dashboard() {
       <Spin size="large" style={{ display: "block", margin: "100px auto" }} />
     );
 
-  const renderSection = (id, type, category, title) => {
-    const items = data.filter(
+  // Функция для фильтрации данных по категории
+  const getItems = (type, category = null) => {
+    return data.filter(
       (i) => i._type === type && (category ? i.category === category : true),
     );
-    if (items.length === 0) return null;
-    return (
-      <div id={id} className="section-container">
-        <Typography.Title level={2} style={{ textAlign: "center" }}>
-          {title}
-        </Typography.Title>
-        <ServiceGrid items={items} />
-        <Divider />
-      </div>
-    );
   };
+
+  // Настройка вкладок (разделов)
+  const tabItems = [
+    {
+      key: "1",
+      label: t("nav_installation"),
+      children: <ServiceGrid items={getItems("service", "installation")} />,
+    },
+    {
+      key: "2",
+      label: t("nav_service"),
+      children: <ServiceGrid items={getItems("service", "repair")} />,
+    },
+    {
+      key: "3",
+      label: t("nav_cleaning"),
+      children: <ServiceGrid items={getItems("service", "cleaning")} />,
+    },
+    {
+      key: "4",
+      label: t("nav_contracts"),
+      children: <ServiceGrid items={getItems("contract")} />,
+    },
+    {
+      key: "5",
+      label: t("nav_portfolio"),
+      children: <ServiceGrid items={getItems("portfolio")} />,
+    },
+  ];
 
   return (
     <div className="fade-in">
       <section className="hero">
-        <Typography.Title style={{ color: "#fff" }}>
+        <Typography.Title style={{ color: "#fff", marginBottom: 10 }}>
           {t("hero_title")}
         </Typography.Title>
-        <Typography.Paragraph style={{ color: "#fff", fontSize: 16 }}>
+        <Typography.Paragraph style={{ color: "#fff", opacity: 0.9 }}>
           {t("hero_sub")}
         </Typography.Paragraph>
       </section>
 
-      {renderSection(
-        "installation",
-        "service",
-        "installation",
-        t("nav_installation"),
-      )}
-      {renderSection("repair", "service", "repair", t("nav_service"))}
-      {renderSection("cleaning", "service", "cleaning", t("nav_cleaning"))}
-      {renderSection("contracts", "contract", null, t("nav_contracts"))}
-      {renderSection("portfolio", "portfolio", null, t("nav_portfolio"))}
+      <div
+        className="section-container"
+        style={{
+          marginTop: -30,
+          background: "#fff",
+          borderRadius: "20px 20px 0 0",
+          position: "relative",
+          zIndex: 10,
+        }}
+      >
+        <ConfigProvider
+          theme={{
+            components: {
+              Tabs: {
+                horizontalMargin: "0 0 20px 0",
+                titleFontSize: 16,
+              },
+            },
+          }}
+        >
+          <Tabs
+            defaultActiveKey="1"
+            items={tabItems}
+            centered
+            size="large"
+            tabBarGutter={20}
+            // Это сделает прокрутку вкладок на мобилках удобной
+            style={{ marginBottom: 40 }}
+          />
+        </ConfigProvider>
 
-      <div id="about" className="section-container">
-        <AboutCompany />
+        <div id="about" style={{ paddingTop: 40 }}>
+          <AboutCompany />
+        </div>
       </div>
     </div>
   );
