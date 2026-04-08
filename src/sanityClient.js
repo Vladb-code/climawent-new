@@ -9,5 +9,11 @@ export const client = createClient({
 });
 
 const builder = imageUrlBuilder(client);
-export const urlFor = (source) =>
-  source ? builder.image(source) : { url: () => "" };
+
+export const urlFor = (source) => {
+  // Добавляем проверку, чтобы builder всегда получал корректные данные
+  if (!source || (source._type !== "image" && !source.asset)) {
+    return { url: () => "", width: () => ({ url: () => "" }) };
+  }
+  return builder.image(source);
+};
