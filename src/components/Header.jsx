@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Layout, Menu, Button, Drawer, Typography, Select } from "antd";
+import { Layout, Menu, Drawer, Typography, Select, Button } from "antd";
 import { MenuOutlined, GlobalOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 
@@ -8,37 +8,16 @@ export default function Header() {
   const { t, i18n } = useTranslation();
 
   const menuItems = [
-    {
-      label: (
-        <a href="#services" onClick={() => setOpen(false)}>
-          {t("nav_home")}
-        </a>
-      ),
-      key: "1",
-    },
-    {
-      label: (
-        <a href="#portfolio" onClick={() => setOpen(false)}>
-          {t("nav_portfolio")}
-        </a>
-      ),
-      key: "7",
-    },
-    {
-      label: (
-        <a href="#about" onClick={() => setOpen(false)}>
-          {t("nav_about")}
-        </a>
-      ),
-      key: "8",
-    },
+    { key: "home", label: <a href="#services">{t("nav_home")}</a> },
+    { key: "portfolio", label: <a href="#portfolio">{t("nav_portfolio")}</a> },
+    { key: "about", label: <a href="#about">{t("nav_about")}</a> },
+    { key: "contracts", label: <a href="#contracts">{t("nav_contracts")}</a> },
   ];
 
   return (
     <Layout.Header
       style={{
-        background: "rgba(255, 255, 255, 0.95)",
-        backdropFilter: "blur(10px)",
+        background: "#fff",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
@@ -62,7 +41,7 @@ export default function Header() {
           <Menu
             mode="horizontal"
             items={menuItems}
-            style={{ border: "none", background: "transparent", minWidth: 280 }}
+            style={{ border: "none", background: "transparent" }}
           />
         </div>
 

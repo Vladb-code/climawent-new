@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Image, Divider } from "antd";
+import { Typography, Image } from "antd";
 import { client, urlFor } from "../sanityClient";
 import { useTranslation } from "react-i18next";
 

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Card, Modal, Carousel, Typography, Tag } from "antd";
+import { Card, Modal, Carousel, Typography } from "antd";
 import { urlFor } from "../sanityClient";
-import { PortableText } from "@portabletext/react";
 import { useTranslation } from "react-i18next";
 
 export default function ServiceCard({ item }) {
@@ -9,8 +8,9 @@ export default function ServiceCard({ item }) {
   const { i18n } = useTranslation();
   const lang = i18n.language;
 
-  const displayTitle = item[`title_${lang}`] || item.title_ru;
-  const displayDesc = item[`description_${lang}`] || item.description_ru;
+  const title = item[`title_${lang}`] || item.title_ru;
+  const description = item[`description_${lang}`] || item.description_ru;
+  const price = item.price;
   const images = item.images
     ? [item.mainImage, ...item.images]
     : [item.mainImage];
@@ -30,45 +30,40 @@ export default function ServiceCard({ item }) {
         onClick={() => setOpen(true)}
       >
         <Card.Meta
-          title={displayTitle}
+          title={title}
           description={
             <Typography.Paragraph ellipsis={{ rows: 2 }}>
-              {displayDesc}
+              {description}
             </Typography.Paragraph>
           }
         />
-        {item.price && <div className="price">{item.price}</div>}
+        {price && <div className="price">{price}</div>}
       </Card>
 
       <Modal
-        title={displayTitle}
+        title={title}
         open={open}
         onCancel={() => setOpen(false)}
         footer={null}
         width={800}
         centered
       >
-        <Carousel
-          arrows
-          infinite={false}
-          style={{ background: "#f7f7f7", borderRadius: 8, overflow: "hidden" }}
-        >
+        <Carousel arrows infinite={false}>
           {images.filter(Boolean).map((img, i) => (
             <div key={i}>
               <img
                 src={urlFor(img).width(800).url()}
-                style={{
-                  width: "100%",
-                  maxHeight: "500px",
-                  objectFit: "contain",
-                }}
+                style={{ width: "100%", maxHeight: 500, objectFit: "contain" }}
               />
             </div>
           ))}
         </Carousel>
-        <div style={{ marginTop: 20 }}>
-          <PortableText value={item.content} />
-        </div>
+        <Typography.Paragraph style={{ marginTop: 20 }}>
+          {description}
+        </Typography.Paragraph>
+        {price && (
+          <Typography.Paragraph strong>Цена: {price}</Typography.Paragraph>
+        )}
       </Modal>
     </>
   );

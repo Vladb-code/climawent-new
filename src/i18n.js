@@ -8,7 +8,6 @@ i18n.use(initReactI18next).init({
         hero_title: "Климат под вашим контролем",
         hero_sub:
           "Профессиональный монтаж и обслуживание кондиционеров в Грузии.",
-        search_placeholder: "Какую услугу вы ищете?",
         tabs_all: "Все услуги",
         tabs_inst: "Установка",
         tabs_service: "Ремонт и обслуживание",
@@ -17,11 +16,11 @@ i18n.use(initReactI18next).init({
         tabs_portfolio: "Наши работы",
         nav_home: "Главная",
         nav_about: "О компании",
+        nav_portfolio: "Наши работы",
         nav_installation: "Установка",
         nav_service: "Ремонт и обслуживание",
         nav_cleaning: "Мойка",
         nav_contracts: "Договора",
-        nav_portfolio: "Наши работы",
       },
     },
     en: {
@@ -29,7 +28,6 @@ i18n.use(initReactI18next).init({
         hero_title: "Climate under your control",
         hero_sub:
           "Professional installation and maintenance of air conditioners in Georgia.",
-        search_placeholder: "Which service are you looking for?",
         tabs_all: "All Services",
         tabs_inst: "Installation",
         tabs_service: "Repair & Maintenance",
@@ -38,11 +36,11 @@ i18n.use(initReactI18next).init({
         tabs_portfolio: "Our Works",
         nav_home: "Home",
         nav_about: "About Us",
+        nav_portfolio: "Our Works",
         nav_installation: "Installation",
         nav_service: "Repair & Maintenance",
         nav_cleaning: "Cleaning",
         nav_contracts: "Contracts",
-        nav_portfolio: "Our Works",
       },
     },
     ka: {
@@ -50,7 +48,6 @@ i18n.use(initReactI18next).init({
         hero_title: "კლიმატი თქვენს კონტროლშია",
         hero_sub:
           "კონდიციონერების პროფესიონალური მონტაჟი და მომსახურება საქართველოში.",
-        search_placeholder: "რომელი სერვისი გჭირდებათ?",
         tabs_all: "ყველა სერვისი",
         tabs_inst: "მონტაჟი",
         tabs_service: "რემონტი და მომსახურება",
@@ -59,15 +56,15 @@ i18n.use(initReactI18next).init({
         tabs_portfolio: "ჩვენი სამუშაოები",
         nav_home: "მთავარი",
         nav_about: "ჩვენ შესახებ",
+        nav_portfolio: "ჩვენი სამუშაოები",
         nav_installation: "მონტაჟი",
         nav_service: "რემონტი და მომსახურება",
         nav_cleaning: "დალაგება/გაწმენდვა",
         nav_contracts: "კონტრაქტები",
-        nav_portfolio: "ჩვენი სამუშაოები",
       },
     },
   },
-  lng: "ru", // язык по умолчанию
+  lng: "ru",
   fallbackLng: "ru",
   interpolation: { escapeValue: false },
 });
