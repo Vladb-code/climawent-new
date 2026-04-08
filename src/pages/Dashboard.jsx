@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Typography, Spin, Tabs, ConfigProvider } from "antd";
 import { client } from "../sanityClient";
 import ServiceGrid from "../components/ServiceGrid";
-import AboutCompany from "./AboutCompany.jsx"; // Добавил .jsx для надежности
+import AboutCompany from ".AboutCompany.jsx";
 import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
@@ -33,7 +33,6 @@ export default function Dashboard() {
     );
   };
 
-  // Только услуги для навигации (Tabs)
   const serviceTabs = [
     {
       key: "installation",
@@ -55,58 +54,51 @@ export default function Dashboard() {
   return (
     <div className="fade-in">
       <section className="hero">
-        <Typography.Title style={{ color: "#fff" }}>
+        <Typography.Title style={{ color: "#fff", margin: 0 }}>
           {t("hero_title")}
         </Typography.Title>
-        <Typography.Paragraph style={{ color: "#fff", fontSize: 16 }}>
+        <Typography.Paragraph style={{ color: "#fff", marginTop: 10 }}>
           {t("hero_sub")}
         </Typography.Paragraph>
       </section>
 
-      <div
-        className="section-container"
-        style={{
-          marginTop: -30,
-          background: "#fff",
-          borderRadius: "20px 20px 0 0",
-          position: "relative",
-          zIndex: 10,
-        }}
-      >
-        {/* Блок Услуг */}
+      <div className="main-content-card">
+        {/* Услуги */}
         <div id="services">
-          <Tabs
-            defaultActiveKey="installation"
-            items={serviceTabs}
-            centered
-            size="large"
-            style={{ marginBottom: 40 }}
-          />
+          <ConfigProvider theme={{ token: { colorPrimary: "#1890ff" } }}>
+            <Tabs
+              defaultActiveKey="installation"
+              items={serviceTabs}
+              centered
+              animated={{ inkBar: true, tabPane: true }}
+              size="middle"
+            />
+          </ConfigProvider>
         </div>
 
-        {/* Блок Портфолио (Наши работы) */}
-        <div id="portfolio" style={{ padding: "40px 0" }}>
+        {/* Портфолио */}
+        <div id="portfolio" style={{ padding: "60px 0 20px" }}>
           <Typography.Title
-            level={2}
-            style={{ textAlign: "center", marginBottom: 30 }}
+            level={3}
+            style={{ textAlign: "center", marginBottom: 25 }}
           >
             {t("nav_portfolio")}
           </Typography.Title>
-          {/* Берем 4 случайные или последние работы */}
           <ServiceGrid items={getItems("portfolio").slice(0, 4)} />
         </div>
 
-        {/* Секция Контракты (для перехода из меню) */}
+        {/* Контракты */}
         <div id="contracts" style={{ padding: "40px 0" }}>
           <Typography.Title
-            level={2}
-            style={{ textAlign: "center", marginBottom: 30 }}
+            level={3}
+            style={{ textAlign: "center", marginBottom: 25 }}
           >
             {t("nav_contracts")}
           </Typography.Title>
           <ServiceGrid items={getItems("contract")} />
         </div>
 
+        {/* О нас */}
         <div id="about" style={{ padding: "40px 0" }}>
           <AboutCompany />
         </div>
