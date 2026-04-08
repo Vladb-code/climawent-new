@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Modal, Carousel, Typography } from "antd";
+import { Card, Modal, Carousel, Typography, Tag } from "antd";
 import { urlFor } from "../sanityClient";
 import { useTranslation } from "react-i18next";
 
@@ -9,8 +9,7 @@ export default function ServiceCard({ item }) {
   const lang = i18n.language;
 
   const title = item[`title_${lang}`] || item.title_ru;
-  const description = item[`description_${lang}`] || item.description_ru;
-  const price = item.price;
+  const desc = item[`description_${lang}`] || item.description_ru;
   const images = item.images
     ? [item.mainImage, ...item.images]
     : [item.mainImage];
@@ -22,8 +21,8 @@ export default function ServiceCard({ item }) {
         className="service-card"
         cover={
           <img
-            src={urlFor(item.mainImage).width(500).url()}
-            alt="service"
+            src={urlFor(item.mainImage).width(600).url()}
+            alt="img"
             className="service-img"
           />
         }
@@ -33,11 +32,15 @@ export default function ServiceCard({ item }) {
           title={title}
           description={
             <Typography.Paragraph ellipsis={{ rows: 2 }}>
-              {description}
+              {desc}
             </Typography.Paragraph>
           }
         />
-        {price && <div className="price">{price}</div>}
+        {item.price && (
+          <div style={{ marginTop: 10, color: "#1890ff", fontWeight: "bold" }}>
+            {item.price}
+          </div>
+        )}
       </Card>
 
       <Modal
@@ -45,24 +48,26 @@ export default function ServiceCard({ item }) {
         open={open}
         onCancel={() => setOpen(false)}
         footer={null}
-        width={800}
+        width={700}
         centered
       >
-        <Carousel arrows infinite={false}>
-          {images.filter(Boolean).map((img, i) => (
+        <Carousel arrows>
+          {images.map((img, i) => (
             <div key={i}>
               <img
-                src={urlFor(img).width(800).url()}
-                style={{ width: "100%", maxHeight: 500, objectFit: "contain" }}
+                src={urlFor(img).url()}
+                style={{ width: "100%", borderRadius: 8 }}
               />
             </div>
           ))}
         </Carousel>
-        <Typography.Paragraph style={{ marginTop: 20 }}>
-          {description}
+        <Typography.Paragraph style={{ marginTop: 20, fontSize: 16 }}>
+          {desc}
         </Typography.Paragraph>
-        {price && (
-          <Typography.Paragraph strong>Цена: {price}</Typography.Paragraph>
+        {item.price && (
+          <Tag color="blue" style={{ fontSize: 14, padding: "5px 10px" }}>
+            Цена: {item.price}
+          </Tag>
         )}
       </Modal>
     </>

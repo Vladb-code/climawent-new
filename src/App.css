@@ -1,0 +1,147 @@
+/* Общие стили для всего приложения */
+body,
+html,
+#root {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+  background-color: #f9f9f9;
+  scroll-behavior: smooth;
+}
+
+/* Hero секция */
+.hero {
+  text-align: center;
+  padding: 100px 20px;
+  background: linear-gradient(135deg, #1890ff 0%, #40a9ff 100%);
+  color: #fff;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 1.3rem;
+}
+
+/* Контейнер для разделов */
+.container {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Сетка карточек услуг */
+.service-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.service-card .price {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #1890ff;
+  margin-top: 10px;
+}
+
+/* Изображения в карточках */
+.service-card img.service-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.service-card:hover img.service-img {
+  transform: scale(1.05);
+}
+
+/* WhatsApp кнопка */
+.wa-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #25d366;
+  color: #fff;
+  font-size: 28px;
+  padding: 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+}
+
+.wa-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Анимация появления */
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Адаптивное меню для мобильных */
+.nav-desktop {
+  display: none;
+}
+
+.nav-mobile-btn {
+  display: block;
+}
+
+/* Footer */
+.ant-layout-footer {
+  padding: 20px 50px;
+  background: #f0f2f5;
+  text-align: center;
+}
+
+/* Адаптивность */
+@media screen and (min-width: 768px) {
+  .nav-desktop {
+    display: block;
+  }
+  .nav-mobile-btn {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+  .hero p {
+    font-size: 1.1rem;
+  }
+  .service-card img.service-img {
+    height: 180px;
+  }
+}

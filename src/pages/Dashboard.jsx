@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Divider, Spin } from "antd";
+import { Typography, Spin, Divider } from "antd";
 import { client } from "../sanityClient";
 import ServiceGrid from "../components/ServiceGrid";
-import AboutCompany from "./AboutCompany";
+import AboutCompany from "../components/AboutCompany";
 import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     client
       .fetch(
-        '*[_type in ["installation","repair","cleaning","contract","portfolio"]]|order(_createdAt desc)',
+        `*[_type in ["service", "portfolio", "contract"]] | order(_createdAt desc)`,
       )
       .then((res) => {
-        setData(res || []);
+        setData(res);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -27,18 +27,21 @@ export default function Dashboard() {
       <Spin size="large" style={{ display: "block", margin: "100px auto" }} />
     );
 
-  const renderSection = (type, title) => (
-    <div id={type} style={{ marginTop: 40 }}>
-      <Typography.Title
-        level={2}
-        style={{ textAlign: "center", marginBottom: 20 }}
-      >
-        {title}
-      </Typography.Title>
-      <ServiceGrid items={data.filter((i) => i._type === type)} />
-      <Divider style={{ margin: "60px 0" }} />
-    </div>
-  );
+  const renderSection = (id, type, category, title) => {
+    const items = data.filter(
+      (i) => i._type === type && (category ? i.category === category : true),
+    );
+    if (items.length === 0) return null;
+    return (
+      <div id={id} className="section-container">
+        <Typography.Title level={2} style={{ textAlign: "center" }}>
+          {title}
+        </Typography.Title>
+        <ServiceGrid items={items} />
+        <Divider />
+      </div>
+    );
+  };
 
   return (
     <div className="fade-in">
@@ -46,22 +49,23 @@ export default function Dashboard() {
         <Typography.Title style={{ color: "#fff" }}>
           {t("hero_title")}
         </Typography.Title>
-        <Typography.Paragraph
-          style={{ color: "#fff", fontSize: 18, marginTop: 10 }}
-        >
+        <Typography.Paragraph style={{ color: "#fff", fontSize: 16 }}>
           {t("hero_sub")}
         </Typography.Paragraph>
       </section>
 
-      {renderSection("installation", t("tabs_inst"))}
-      {renderSection("repair", t("tabs_service"))}
-      {renderSection("cleaning", t("tabs_cleaning"))}
-      {renderSection("contract", t("tabs_contracts"))}
+      {renderSection(
+        "installation",
+        "service",
+        "installation",
+        t("nav_installation"),
+      )}
+      {renderSection("repair", "service", "repair", t("nav_service"))}
+      {renderSection("cleaning", "service", "cleaning", t("nav_cleaning"))}
+      {renderSection("contracts", "contract", null, t("nav_contracts"))}
+      {renderSection("portfolio", "portfolio", null, t("nav_portfolio"))}
 
-      <div id="portfolio">
-        {renderSection("portfolio", t("tabs_portfolio"))}
-      </div>
-      <div id="about">
+      <div id="about" className="section-container">
         <AboutCompany />
       </div>
     </div>
