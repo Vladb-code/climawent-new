@@ -13,6 +13,7 @@ export default function Header() {
     { key: "contracts", label: <a href="#contracts">{t("nav_contracts")}</a> },
     { key: "about", label: <a href="#about">{t("nav_about")}</a> },
   ];
+
   return (
     <Layout.Header
       style={{
@@ -30,17 +31,23 @@ export default function Header() {
     >
       <Typography.Title
         level={3}
-        style={{ margin: 0, color: "#0050b3", fontWeight: 800 }}
+        style={{
+          margin: 0,
+          color: "#0050b3",
+          fontWeight: 800,
+          whiteSpace: "nowrap",
+          flexShrink: 0,
+        }}
       >
         CLIMA<span style={{ color: "#1890ff" }}>WENT</span>
       </Typography.Title>
 
-      <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         <div className="nav-desktop">
           <Menu
             mode="horizontal"
             items={menuItems}
-            style={{ border: "none", background: "transparent" }}
+            style={{ border: "none", background: "transparent", minWidth: 300 }}
           />
         </div>
 
@@ -59,7 +66,7 @@ export default function Header() {
         <Button
           className="nav-mobile-btn"
           type="text"
-          icon={<MenuOutlined />}
+          icon={<MenuOutlined style={{ fontSize: 20 }} />}
           onClick={() => setOpen(true)}
         />
       </div>
@@ -70,7 +77,11 @@ export default function Header() {
         open={open}
         width={250}
       >
-        <Menu mode="vertical" items={menuItems} />
+        <Menu
+          mode="vertical"
+          items={menuItems}
+          onClick={() => setOpen(false)}
+        />
       </Drawer>
     </Layout.Header>
   );

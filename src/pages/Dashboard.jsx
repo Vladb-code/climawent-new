@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Typography, Spin, Tabs, ConfigProvider } from "antd";
 import { client } from "../sanityClient";
 import ServiceGrid from "../components/ServiceGrid";
-import AboutCompany from "./AboutCompany.jsx";
+import AboutCompany from "../components/AboutCompany.jsx";
 import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
@@ -35,17 +35,17 @@ export default function Dashboard() {
 
   const serviceTabs = [
     {
-      key: "installation",
+      key: "inst",
       label: t("nav_installation"),
       children: <ServiceGrid items={getItems("service", "installation")} />,
     },
     {
-      key: "repair",
+      key: "rep",
       label: t("nav_service"),
       children: <ServiceGrid items={getItems("service", "repair")} />,
     },
     {
-      key: "cleaning",
+      key: "cln",
       label: t("nav_cleaning"),
       children: <ServiceGrid items={getItems("service", "cleaning")} />,
     },
@@ -54,29 +54,31 @@ export default function Dashboard() {
   return (
     <div className="fade-in">
       <section className="hero">
-        <Typography.Title style={{ color: "#fff", margin: 0 }}>
+        <Typography.Title
+          style={{ color: "#fff", margin: 0, fontSize: "1.8rem" }}
+        >
           {t("hero_title")}
         </Typography.Title>
-        <Typography.Paragraph style={{ color: "#fff", marginTop: 10 }}>
+        <Typography.Paragraph
+          style={{ color: "#fff", marginTop: 10, fontSize: "1rem" }}
+        >
           {t("hero_sub")}
         </Typography.Paragraph>
       </section>
 
       <div className="main-content-card">
-        {/* Услуги */}
         <div id="services">
           <ConfigProvider theme={{ token: { colorPrimary: "#1890ff" } }}>
             <Tabs
-              defaultActiveKey="installation"
+              defaultActiveKey="inst"
               items={serviceTabs}
-              centered
-              animated={{ inkBar: true, tabPane: true }}
+              centered={false}
               size="middle"
+              tabBarGutter={20}
             />
           </ConfigProvider>
         </div>
 
-        {/* Портфолио */}
         <div id="portfolio" style={{ padding: "60px 0 20px" }}>
           <Typography.Title
             level={3}
@@ -87,7 +89,6 @@ export default function Dashboard() {
           <ServiceGrid items={getItems("portfolio").slice(0, 4)} />
         </div>
 
-        {/* Контракты */}
         <div id="contracts" style={{ padding: "40px 0" }}>
           <Typography.Title
             level={3}
@@ -98,7 +99,6 @@ export default function Dashboard() {
           <ServiceGrid items={getItems("contract")} />
         </div>
 
-        {/* О нас */}
         <div id="about" style={{ padding: "40px 0" }}>
           <AboutCompany />
         </div>
