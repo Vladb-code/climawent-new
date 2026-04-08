@@ -1,5 +1,5 @@
 import { createClient } from "@sanity/client";
-import imageUrlBuilder from "@sanity/image-url";
+import createImageUrlBuilder from "@sanity/image-url"; // Изменили импорт здесь
 
 export const client = createClient({
   projectId: "1lm1gn50",
@@ -8,12 +8,16 @@ export const client = createClient({
   apiVersion: "2024-03-21",
 });
 
-const builder = imageUrlBuilder(client);
+const builder = createImageUrlBuilder(client);
 
 export const urlFor = (source) => {
-  // Добавляем проверку, чтобы builder всегда получал корректные данные
-  if (!source || (source._type !== "image" && !source.asset)) {
-    return { url: () => "", width: () => ({ url: () => "" }) };
+  // Если картинки нет или она битая, возвращаем объект-заглушку с методами
+  if (!source || !source.asset) {
+    return {
+      url: () => "",
+      width: () => ({ url: () => "" }),
+      fit: () => ({ url: () => "" }),
+    };
   }
   return builder.image(source);
 };
