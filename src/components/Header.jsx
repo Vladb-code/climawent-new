@@ -10,10 +10,9 @@ export default function Header() {
   const menuItems = [
     { key: "home", label: <a href="#services">{t("nav_home")}</a> },
     { key: "portfolio", label: <a href="#portfolio">{t("nav_portfolio")}</a> },
-    { key: "about", label: <a href="#about">{t("nav_about")}</a> },
     { key: "contracts", label: <a href="#contracts">{t("nav_contracts")}</a> },
+    { key: "about", label: <a href="#about">{t("nav_about")}</a> },
   ];
-
   return (
     <Layout.Header
       style={{

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Typography, Spin, Tabs, ConfigProvider } from "antd";
 import { client } from "../sanityClient";
 import ServiceGrid from "../components/ServiceGrid";
-import AboutCompany from "./AboutCompany";
+import AboutCompany from "../components/AboutCompany.jsx"; // Добавил .jsx для надежности
 import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
@@ -27,49 +27,38 @@ export default function Dashboard() {
       <Spin size="large" style={{ display: "block", margin: "100px auto" }} />
     );
 
-  // Функция для фильтрации данных по категории
   const getItems = (type, category = null) => {
     return data.filter(
       (i) => i._type === type && (category ? i.category === category : true),
     );
   };
 
-  // Настройка вкладок (разделов)
-  const tabItems = [
+  // Только услуги для навигации (Tabs)
+  const serviceTabs = [
     {
-      key: "1",
+      key: "installation",
       label: t("nav_installation"),
       children: <ServiceGrid items={getItems("service", "installation")} />,
     },
     {
-      key: "2",
+      key: "repair",
       label: t("nav_service"),
       children: <ServiceGrid items={getItems("service", "repair")} />,
     },
     {
-      key: "3",
+      key: "cleaning",
       label: t("nav_cleaning"),
       children: <ServiceGrid items={getItems("service", "cleaning")} />,
-    },
-    {
-      key: "4",
-      label: t("nav_contracts"),
-      children: <ServiceGrid items={getItems("contract")} />,
-    },
-    {
-      key: "5",
-      label: t("nav_portfolio"),
-      children: <ServiceGrid items={getItems("portfolio")} />,
     },
   ];
 
   return (
     <div className="fade-in">
       <section className="hero">
-        <Typography.Title style={{ color: "#fff", marginBottom: 10 }}>
+        <Typography.Title style={{ color: "#fff" }}>
           {t("hero_title")}
         </Typography.Title>
-        <Typography.Paragraph style={{ color: "#fff", opacity: 0.9 }}>
+        <Typography.Paragraph style={{ color: "#fff", fontSize: 16 }}>
           {t("hero_sub")}
         </Typography.Paragraph>
       </section>
@@ -84,28 +73,41 @@ export default function Dashboard() {
           zIndex: 10,
         }}
       >
-        <ConfigProvider
-          theme={{
-            components: {
-              Tabs: {
-                horizontalMargin: "0 0 20px 0",
-                titleFontSize: 16,
-              },
-            },
-          }}
-        >
+        {/* Блок Услуг */}
+        <div id="services">
           <Tabs
-            defaultActiveKey="1"
-            items={tabItems}
+            defaultActiveKey="installation"
+            items={serviceTabs}
             centered
             size="large"
-            tabBarGutter={20}
-            // Это сделает прокрутку вкладок на мобилках удобной
             style={{ marginBottom: 40 }}
           />
-        </ConfigProvider>
+        </div>
 
-        <div id="about" style={{ paddingTop: 40 }}>
+        {/* Блок Портфолио (Наши работы) */}
+        <div id="portfolio" style={{ padding: "40px 0" }}>
+          <Typography.Title
+            level={2}
+            style={{ textAlign: "center", marginBottom: 30 }}
+          >
+            {t("nav_portfolio")}
+          </Typography.Title>
+          {/* Берем 4 случайные или последние работы */}
+          <ServiceGrid items={getItems("portfolio").slice(0, 4)} />
+        </div>
+
+        {/* Секция Контракты (для перехода из меню) */}
+        <div id="contracts" style={{ padding: "40px 0" }}>
+          <Typography.Title
+            level={2}
+            style={{ textAlign: "center", marginBottom: 30 }}
+          >
+            {t("nav_contracts")}
+          </Typography.Title>
+          <ServiceGrid items={getItems("contract")} />
+        </div>
+
+        <div id="about" style={{ padding: "40px 0" }}>
           <AboutCompany />
         </div>
       </div>
