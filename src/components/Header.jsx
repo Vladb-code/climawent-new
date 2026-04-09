@@ -45,7 +45,6 @@ export default function Header() {
           color: "#0050b3",
           fontWeight: 800,
           whiteSpace: "nowrap",
-          flexShrink: 0,
         }}
       >
         CLIMA<span style={{ color: "#1890ff" }}>WENT</span>
@@ -59,8 +58,7 @@ export default function Header() {
           justifyContent: "flex-end",
         }}
       >
-        {/* Десктопная часть: меню и выбор языка */}
-        <div className="nav-desktop" style={{ alignItems: "center" }}>
+        <div className="nav-desktop">
           <Menu
             mode="horizontal"
             items={menuItems}
@@ -72,6 +70,7 @@ export default function Header() {
             }}
           />
           <Select
+            className="nav-desktop"
             defaultValue={i18n.language}
             onChange={(val) => i18n.changeLanguage(val)}
             suffixIcon={<GlobalOutlined />}
@@ -84,11 +83,10 @@ export default function Header() {
           />
         </div>
 
-        {/* Мобильная часть: только кнопка бургер */}
         <Button
           className="nav-mobile-btn"
           type="text"
-          icon={<MenuOutlined style={{ fontSize: 24 }} />}
+          icon={<MenuOutlined style={{ fontSize: 26 }} />}
           onClick={() => setOpen(true)}
         />
       </div>
@@ -100,7 +98,7 @@ export default function Header() {
         width={280}
       >
         <div style={{ marginBottom: 20 }}>
-          <Typography.Text strong>Язык / Language:</Typography.Text>
+          <Typography.Text strong>Язык:</Typography.Text>
           <Select
             defaultValue={i18n.language}
             onChange={(val) => {

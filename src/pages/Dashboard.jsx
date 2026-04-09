@@ -10,6 +10,9 @@ export default function Dashboard() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Состояние для определения мобильного экрана
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 1100);
+
   useEffect(() => {
     client
       .fetch(
@@ -20,6 +23,10 @@ export default function Dashboard() {
         setLoading(false);
       })
       .catch(() => setLoading(false));
+
+    const handleResize = () => setIsMobile(window.innerWidth <= 1100);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   if (loading)
@@ -68,12 +75,14 @@ export default function Dashboard() {
             <Tabs
               defaultActiveKey="inst"
               items={serviceTabs}
-              centered={false}
-              size="middle"
-              tabBarGutter={20}
+              // Центрируем только если не мобильный
+              centered={!isMobile}
+              size="large"
+              tabBarGutter={isMobile ? 20 : 60}
             />
           </ConfigProvider>
         </div>
+
         <div id="portfolio" style={{ padding: "60px 0 20px" }}>
           <Typography.Title
             level={3}
@@ -83,6 +92,7 @@ export default function Dashboard() {
           </Typography.Title>
           <ServiceGrid items={getItems("portfolio").slice(0, 4)} />
         </div>
+
         <div id="contracts" style={{ padding: "40px 0 20px" }}>
           <Typography.Title
             level={3}
@@ -92,6 +102,7 @@ export default function Dashboard() {
           </Typography.Title>
           <ServiceGrid items={getItems("contract")} />
         </div>
+
         <div id="about" style={{ padding: "40px 0" }}>
           <AboutCompany />
         </div>

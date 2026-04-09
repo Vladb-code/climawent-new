@@ -3,12 +3,13 @@
   --dark-blue: #003a8c;
 }
 
-/* Глобальный запрет горизонтального скролла */
+/* Полный запрет горизонтального скролла */
 html,
 body {
   margin: 0;
   padding: 0;
   width: 100%;
+  max-width: 100%;
   overflow-x: hidden;
   position: relative;
   font-family: "Inter", sans-serif;
@@ -21,7 +22,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Hero */
 .hero {
   background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary) 100%);
   color: white;
@@ -31,7 +31,6 @@ body {
   box-sizing: border-box;
 }
 
-/* Контейнер контента */
 .main-content-card {
   margin-top: -40px;
   background: #fff;
@@ -43,7 +42,7 @@ body {
   box-sizing: border-box;
 }
 
-/* --- АДАПТИВНОСТЬ МЕНЮ --- */
+/* Настройки Адаптива */
 .nav-mobile-btn {
   display: none !important;
 }
@@ -51,15 +50,15 @@ body {
   display: flex !important;
 }
 
-@media (max-width: 1024px) {
+@media screen and (max-width: 1100px) {
   .nav-desktop {
-    display: none !important; /* Жестко прячем на мобилках */
+    display: none !important;
   }
   .nav-mobile-btn {
-    display: flex !important; /* Жестко показываем бургер */
+    display: flex !important;
   }
 
-  /* Табы крутятся пальцем внутри блока */
+  /* Табы листаются пальцем на мобилках */
   .ant-tabs-nav-wrap {
     overflow-x: auto !important;
   }
@@ -69,7 +68,6 @@ body {
   }
 }
 
-/* Карточки */
 .service-card {
   width: 100%;
   border-radius: 12px;
