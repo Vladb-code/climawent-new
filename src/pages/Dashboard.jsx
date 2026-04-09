@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Spin, Select, ConfigProvider } from "antd";
+import { Typography, Spin, Tabs, ConfigProvider } from "antd";
 import { client } from "../sanityClient";
 import ServiceGrid from "../components/ServiceGrid";
 import AboutCompany from "./AboutCompany.jsx";
@@ -9,7 +9,6 @@ export default function Dashboard() {
   const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeCategory, setActiveCategory] = useState("installation");
 
   useEffect(() => {
     client
@@ -34,58 +33,49 @@ export default function Dashboard() {
     );
   };
 
-  const selectOptions = [
-    { value: "installation", label: t("nav_installation") },
-    { value: "repair", label: t("nav_service") },
-    { value: "cleaning", label: t("nav_cleaning") },
+  const serviceTabs = [
+    {
+      key: "inst",
+      label: t("nav_installation"),
+      children: <ServiceGrid items={getItems("service", "installation")} />,
+    },
+    {
+      key: "rep",
+      label: t("nav_service"),
+      children: <ServiceGrid items={getItems("service", "repair")} />,
+    },
+    {
+      key: "cln",
+      label: t("nav_cleaning"),
+      children: <ServiceGrid items={getItems("service", "cleaning")} />,
+    },
   ];
 
   return (
     <div className="fade-in">
       <section className="hero">
-        <Typography.Title
-          style={{ color: "#fff", margin: 0, fontSize: "1.8rem" }}
-        >
+        <Typography.Title style={{ color: "#fff", margin: 0 }}>
           {t("hero_title")}
         </Typography.Title>
-        <Typography.Paragraph
-          style={{ color: "#fff", marginTop: 10, fontSize: "1rem" }}
-        >
+        <Typography.Paragraph style={{ color: "#fff", marginTop: 10 }}>
           {t("hero_sub")}
         </Typography.Paragraph>
       </section>
 
       <div className="main-content-card">
-        {/* Выбор услуги через выпадающий список */}
-        <div
-          id="services"
-          style={{ textAlign: "center", marginBottom: 40, padding: "0 10px" }}
-        >
-          <Typography.Paragraph
-            strong
-            style={{ marginBottom: 12, fontSize: 16 }}
-          >
-            {t("select_service")}
-          </Typography.Paragraph>
-
-          <ConfigProvider
-            theme={{ token: { colorPrimary: "#1890ff", borderRadius: 8 } }}
-          >
-            <Select
-              value={activeCategory}
-              onChange={(val) => setActiveCategory(val)}
-              style={{ width: "100%", maxWidth: 400, height: 50 }}
+        <div id="services">
+          <ConfigProvider theme={{ token: { colorPrimary: "#1890ff" } }}>
+            <Tabs
+              defaultActiveKey="inst"
+              items={serviceTabs}
+              centered // ВСЕГДА ПО ЦЕНТРУ
               size="large"
-              options={selectOptions}
+              tabBarGutter={30}
+              className="centered-tabs"
             />
           </ConfigProvider>
-
-          <div style={{ marginTop: 30 }}>
-            <ServiceGrid items={getItems("service", activeCategory)} />
-          </div>
         </div>
-
-        {/* Секции Portfolio, Contracts, About */}
+        {/* ... остальные блоки (portfolio, contracts, about) остаются как были */}
         <div
           id="portfolio"
           style={{ padding: "60px 0 20px", borderTop: "1px solid #f0f0f0" }}
@@ -98,10 +88,9 @@ export default function Dashboard() {
           </Typography.Title>
           <ServiceGrid items={getItems("portfolio").slice(0, 4)} />
         </div>
-
         <div
           id="contracts"
-          style={{ padding: "60px 0", borderTop: "1px solid #f0f0f0" }}
+          style={{ padding: "40px 0", borderTop: "1px solid #f0f0f0" }}
         >
           <Typography.Title
             level={3}
@@ -111,7 +100,6 @@ export default function Dashboard() {
           </Typography.Title>
           <ServiceGrid items={getItems("contract")} />
         </div>
-
         <div
           id="about"
           style={{ padding: "40px 0", borderTop: "1px solid #f0f0f0" }}

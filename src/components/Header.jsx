@@ -34,7 +34,6 @@ export default function Header() {
         top: 0,
         zIndex: 1000,
         height: 65,
-        width: "100%",
         borderBottom: "1px solid #f0f0f0",
       }}
     >
@@ -50,55 +49,21 @@ export default function Header() {
         CLIMA<span style={{ color: "#1890ff" }}>WENT</span>
       </Typography.Title>
 
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          flex: 1,
-          justifyContent: "flex-end",
-        }}
-      >
-        <div className="nav-desktop">
-          <Menu
-            mode="horizontal"
-            items={menuItems}
-            style={{
-              border: "none",
-              minWidth: 350,
-              background: "transparent",
-              justifyContent: "flex-end",
-            }}
-          />
-          <Select
-            className="nav-desktop"
-            defaultValue={i18n.language}
-            onChange={(val) => i18n.changeLanguage(val)}
-            suffixIcon={<GlobalOutlined />}
-            style={{ width: 70, marginLeft: 15 }}
-            options={[
-              { value: "ru", label: "RU" },
-              { value: "ka", label: "GE" },
-              { value: "en", label: "EN" },
-            ]}
-          />
-        </div>
-
-        <Button
-          className="nav-mobile-btn"
-          type="text"
-          icon={<MenuOutlined style={{ fontSize: 26 }} />}
-          onClick={() => setOpen(true)}
-        />
-      </div>
+      {/* Кнопка меню видна ВСЕГДА */}
+      <Button
+        type="text"
+        icon={<MenuOutlined style={{ fontSize: 24 }} />}
+        onClick={() => setOpen(true)}
+      />
 
       <Drawer
-        title="Меню"
+        title="MENU"
         onClose={() => setOpen(false)}
         open={open}
         width={280}
       >
         <div style={{ marginBottom: 20 }}>
-          <Typography.Text strong>Язык:</Typography.Text>
+          <Typography.Text strong>{t("select_lang")}</Typography.Text>
           <Select
             defaultValue={i18n.language}
             onChange={(val) => {
@@ -107,9 +72,9 @@ export default function Header() {
             }}
             style={{ width: "100%", marginTop: 10 }}
             options={[
+              { value: "en", label: "English" },
               { value: "ru", label: "Русский" },
               { value: "ka", label: "ქართული" },
-              { value: "en", label: "English" },
             ]}
           />
         </div>
@@ -118,7 +83,7 @@ export default function Header() {
           mode="vertical"
           items={menuItems}
           onClick={() => setOpen(false)}
-          style={{ border: "none", fontSize: "18px" }}
+          style={{ border: "none", fontSize: 18 }}
         />
       </Drawer>
     </Layout.Header>
