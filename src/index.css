@@ -3,13 +3,12 @@
   --dark-blue: #003a8c;
 }
 
-/* Запрещаем горизонтальный скролл на уровне всей страницы */
+/* Глобальный запрет горизонтального скролла */
 html,
 body {
   margin: 0;
   padding: 0;
   width: 100%;
-  max-width: 100%;
   overflow-x: hidden;
   position: relative;
   font-family: "Inter", sans-serif;
@@ -18,21 +17,21 @@ body {
 }
 
 #root {
-  overflow-x: hidden;
   width: 100%;
+  overflow-x: hidden;
 }
 
-/* Hero секция */
+/* Hero */
 .hero {
   background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary) 100%);
   color: white;
-  padding: 50px 15px 80px;
+  padding: 45px 15px 75px;
   text-align: center;
   width: 100%;
   box-sizing: border-box;
 }
 
-/* Белая карточка контента */
+/* Контейнер контента */
 .main-content-card {
   margin-top: -40px;
   background: #fff;
@@ -44,39 +43,45 @@ body {
   box-sizing: border-box;
 }
 
-/* Скрываем десктопное меню на мобилках */
-@media (max-width: 992px) {
+/* --- АДАПТИВНОСТЬ МЕНЮ --- */
+.nav-mobile-btn {
+  display: none !important;
+}
+.nav-desktop {
+  display: flex !important;
+}
+
+@media (max-width: 1024px) {
   .nav-desktop {
-    display: none !important;
+    display: none !important; /* Жестко прячем на мобилках */
   }
   .nav-mobile-btn {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
+    display: flex !important; /* Жестко показываем бургер */
   }
 
-  /* Табы теперь будут прокручиваться ВНУТРИ себя, не толкая весь сайт */
+  /* Табы крутятся пальцем внутри блока */
   .ant-tabs-nav-wrap {
     overflow-x: auto !important;
   }
+  .ant-tabs-nav-list {
+    white-space: nowrap !important;
+    display: flex !important;
+  }
 }
 
-/* Карточки услуг */
+/* Карточки */
 .service-card {
   width: 100%;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid #f0f0f0 !important;
-  box-sizing: border-box;
 }
-
 .service-img {
   height: 200px;
   object-fit: cover;
   width: 100%;
 }
 
-/* Кнопка WhatsApp */
 .wa-button {
   position: fixed;
   bottom: 20px;

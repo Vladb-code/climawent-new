@@ -29,7 +29,7 @@ export default function Header() {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: "0 15px",
+        padding: "0 20px",
         position: "sticky",
         top: 0,
         zIndex: 1000,
@@ -45,22 +45,36 @@ export default function Header() {
           color: "#0050b3",
           fontWeight: 800,
           whiteSpace: "nowrap",
+          flexShrink: 0,
         }}
       >
         CLIMA<span style={{ color: "#1890ff" }}>WENT</span>
       </Typography.Title>
 
-      <div style={{ display: "flex", alignItems: "center" }}>
-        {/* Это меню будет скрыто через CSS на мобилках */}
-        <div className="nav-desktop">
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          flex: 1,
+          justifyContent: "flex-end",
+        }}
+      >
+        {/* Десктопная часть: меню и выбор языка */}
+        <div className="nav-desktop" style={{ alignItems: "center" }}>
           <Menu
             mode="horizontal"
             items={menuItems}
-            style={{ border: "none", minWidth: 350 }}
+            style={{
+              border: "none",
+              minWidth: 350,
+              background: "transparent",
+              justifyContent: "flex-end",
+            }}
           />
           <Select
             defaultValue={i18n.language}
             onChange={(val) => i18n.changeLanguage(val)}
+            suffixIcon={<GlobalOutlined />}
             style={{ width: 70, marginLeft: 15 }}
             options={[
               { value: "ru", label: "RU" },
@@ -70,11 +84,10 @@ export default function Header() {
           />
         </div>
 
-        {/* Кнопка бургер, которая видна ТОЛЬКО на мобилках */}
+        {/* Мобильная часть: только кнопка бургер */}
         <Button
           className="nav-mobile-btn"
           type="text"
-          style={{ display: "none" }}
           icon={<MenuOutlined style={{ fontSize: 24 }} />}
           onClick={() => setOpen(true)}
         />
@@ -87,14 +100,14 @@ export default function Header() {
         width={280}
       >
         <div style={{ marginBottom: 20 }}>
-          <Typography.Text type="secondary">Язык:</Typography.Text>
+          <Typography.Text strong>Язык / Language:</Typography.Text>
           <Select
             defaultValue={i18n.language}
             onChange={(val) => {
               i18n.changeLanguage(val);
               setOpen(false);
             }}
-            style={{ width: "100%", marginTop: 8 }}
+            style={{ width: "100%", marginTop: 10 }}
             options={[
               { value: "ru", label: "Русский" },
               { value: "ka", label: "ქართული" },
@@ -107,7 +120,7 @@ export default function Header() {
           mode="vertical"
           items={menuItems}
           onClick={() => setOpen(false)}
-          style={{ border: "none" }}
+          style={{ border: "none", fontSize: "18px" }}
         />
       </Drawer>
     </Layout.Header>

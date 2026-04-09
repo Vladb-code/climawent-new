@@ -54,20 +54,15 @@ export default function Dashboard() {
   return (
     <div className="fade-in">
       <section className="hero">
-        <Typography.Title
-          style={{ color: "#fff", margin: 0, fontSize: "1.8rem" }}
-        >
+        <Typography.Title style={{ color: "#fff", margin: 0 }}>
           {t("hero_title")}
         </Typography.Title>
-        <Typography.Paragraph
-          style={{ color: "#fff", marginTop: 10, fontSize: "1rem" }}
-        >
+        <Typography.Paragraph style={{ color: "#fff", marginTop: 10 }}>
           {t("hero_sub")}
         </Typography.Paragraph>
       </section>
 
       <div className="main-content-card">
-        {/* Блок Услуг */}
         <div id="services">
           <ConfigProvider theme={{ token: { colorPrimary: "#1890ff" } }}>
             <Tabs
@@ -76,12 +71,9 @@ export default function Dashboard() {
               centered={false}
               size="middle"
               tabBarGutter={20}
-              className="custom-tabs"
             />
           </ConfigProvider>
         </div>
-
-        {/* Блок Портфолио */}
         <div id="portfolio" style={{ padding: "60px 0 20px" }}>
           <Typography.Title
             level={3}
@@ -91,9 +83,7 @@ export default function Dashboard() {
           </Typography.Title>
           <ServiceGrid items={getItems("portfolio").slice(0, 4)} />
         </div>
-
-        {/* Блок Контракты */}
-        <div id="contracts" style={{ padding: "60px 0 20px" }}>
+        <div id="contracts" style={{ padding: "40px 0 20px" }}>
           <Typography.Title
             level={3}
             style={{ textAlign: "center", marginBottom: 25 }}
@@ -102,8 +92,6 @@ export default function Dashboard() {
           </Typography.Title>
           <ServiceGrid items={getItems("contract")} />
         </div>
-
-        {/* Блок О компании */}
         <div id="about" style={{ padding: "40px 0" }}>
           <AboutCompany />
         </div>
