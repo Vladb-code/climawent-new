@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Spin, Tabs, ConfigProvider } from "antd";
+import { Typography, Spin, Select, ConfigProvider } from "antd";
 import { client } from "../sanityClient";
 import ServiceGrid from "../components/ServiceGrid";
 import AboutCompany from "./AboutCompany.jsx";
@@ -9,9 +9,7 @@ export default function Dashboard() {
   const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Состояние для определения мобильного экрана
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 1100);
+  const [activeCategory, setActiveCategory] = useState("installation");
 
   useEffect(() => {
     client
@@ -23,10 +21,6 @@ export default function Dashboard() {
         setLoading(false);
       })
       .catch(() => setLoading(false));
-
-    const handleResize = () => setIsMobile(window.innerWidth <= 1100);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   if (loading)
@@ -40,50 +34,62 @@ export default function Dashboard() {
     );
   };
 
-  const serviceTabs = [
-    {
-      key: "inst",
-      label: t("nav_installation"),
-      children: <ServiceGrid items={getItems("service", "installation")} />,
-    },
-    {
-      key: "rep",
-      label: t("nav_service"),
-      children: <ServiceGrid items={getItems("service", "repair")} />,
-    },
-    {
-      key: "cln",
-      label: t("nav_cleaning"),
-      children: <ServiceGrid items={getItems("service", "cleaning")} />,
-    },
+  const selectOptions = [
+    { value: "installation", label: t("nav_installation") },
+    { value: "repair", label: t("nav_service") },
+    { value: "cleaning", label: t("nav_cleaning") },
   ];
 
   return (
     <div className="fade-in">
       <section className="hero">
-        <Typography.Title style={{ color: "#fff", margin: 0 }}>
+        <Typography.Title
+          style={{ color: "#fff", margin: 0, fontSize: "1.8rem" }}
+        >
           {t("hero_title")}
         </Typography.Title>
-        <Typography.Paragraph style={{ color: "#fff", marginTop: 10 }}>
+        <Typography.Paragraph
+          style={{ color: "#fff", marginTop: 10, fontSize: "1rem" }}
+        >
           {t("hero_sub")}
         </Typography.Paragraph>
       </section>
 
       <div className="main-content-card">
-        <div id="services">
-          <ConfigProvider theme={{ token: { colorPrimary: "#1890ff" } }}>
-            <Tabs
-              defaultActiveKey="inst"
-              items={serviceTabs}
-              // Центрируем только если не мобильный
-              centered={!isMobile}
+        {/* Выбор услуги через выпадающий список */}
+        <div
+          id="services"
+          style={{ textAlign: "center", marginBottom: 40, padding: "0 10px" }}
+        >
+          <Typography.Paragraph
+            strong
+            style={{ marginBottom: 12, fontSize: 16 }}
+          >
+            {t("select_service")}
+          </Typography.Paragraph>
+
+          <ConfigProvider
+            theme={{ token: { colorPrimary: "#1890ff", borderRadius: 8 } }}
+          >
+            <Select
+              value={activeCategory}
+              onChange={(val) => setActiveCategory(val)}
+              style={{ width: "100%", maxWidth: 400, height: 50 }}
               size="large"
-              tabBarGutter={isMobile ? 20 : 60}
+              options={selectOptions}
             />
           </ConfigProvider>
+
+          <div style={{ marginTop: 30 }}>
+            <ServiceGrid items={getItems("service", activeCategory)} />
+          </div>
         </div>
 
-        <div id="portfolio" style={{ padding: "60px 0 20px" }}>
+        {/* Секции Portfolio, Contracts, About */}
+        <div
+          id="portfolio"
+          style={{ padding: "60px 0 20px", borderTop: "1px solid #f0f0f0" }}
+        >
           <Typography.Title
             level={3}
             style={{ textAlign: "center", marginBottom: 25 }}
@@ -93,7 +99,10 @@ export default function Dashboard() {
           <ServiceGrid items={getItems("portfolio").slice(0, 4)} />
         </div>
 
-        <div id="contracts" style={{ padding: "40px 0 20px" }}>
+        <div
+          id="contracts"
+          style={{ padding: "60px 0", borderTop: "1px solid #f0f0f0" }}
+        >
           <Typography.Title
             level={3}
             style={{ textAlign: "center", marginBottom: 25 }}
@@ -103,7 +112,10 @@ export default function Dashboard() {
           <ServiceGrid items={getItems("contract")} />
         </div>
 
-        <div id="about" style={{ padding: "40px 0" }}>
+        <div
+          id="about"
+          style={{ padding: "40px 0", borderTop: "1px solid #f0f0f0" }}
+        >
           <AboutCompany />
         </div>
       </div>

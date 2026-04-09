@@ -3,14 +3,13 @@
   --dark-blue: #003a8c;
 }
 
-/* Полный запрет горизонтального скролла */
 html,
 body {
   margin: 0;
   padding: 0;
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: hidden; /* Запрет сдвига влево-вправо */
   position: relative;
   font-family: "Inter", sans-serif;
   background: #f9f9f9;
@@ -25,7 +24,7 @@ body {
 .hero {
   background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary) 100%);
   color: white;
-  padding: 45px 15px 75px;
+  padding: 50px 15px 80px;
   text-align: center;
   width: 100%;
   box-sizing: border-box;
@@ -35,14 +34,14 @@ body {
   margin-top: -40px;
   background: #fff;
   border-radius: 30px 30px 0 0;
-  padding: 20px 10px;
+  padding: 30px 15px;
   position: relative;
   z-index: 10;
   width: 100%;
   box-sizing: border-box;
 }
 
-/* Настройки Адаптива */
+/* Адаптивность меню */
 .nav-mobile-btn {
   display: none !important;
 }
@@ -55,15 +54,6 @@ body {
     display: none !important;
   }
   .nav-mobile-btn {
-    display: flex !important;
-  }
-
-  /* Табы листаются пальцем на мобилках */
-  .ant-tabs-nav-wrap {
-    overflow-x: auto !important;
-  }
-  .ant-tabs-nav-list {
-    white-space: nowrap !important;
     display: flex !important;
   }
 }
