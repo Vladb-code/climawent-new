@@ -3,36 +3,49 @@
   --dark-blue: #003a8c;
 }
 
-/* Плавная прокрутка к якорям */
-html {
+/* Запрещаем горизонтальный скролл на уровне всей страницы */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  position: relative;
+  font-family: "Inter", sans-serif;
+  background: #f9f9f9;
   scroll-behavior: smooth;
 }
 
-body {
-  margin: 0;
-  font-family: "Inter", sans-serif;
-  background: #f9f9f9;
+#root {
   overflow-x: hidden;
+  width: 100%;
 }
 
+/* Hero секция */
 .hero {
   background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary) 100%);
   color: white;
-  padding: 50px 20px 80px;
+  padding: 50px 15px 80px;
   text-align: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
+/* Белая карточка контента */
 .main-content-card {
   margin-top: -40px;
   background: #fff;
   border-radius: 30px 30px 0 0;
-  padding: 20px 15px;
+  padding: 20px 10px;
   position: relative;
   z-index: 10;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* Адаптивность Шапки */
-@media (max-width: 768px) {
+/* Скрываем десктопное меню на мобилках */
+@media (max-width: 992px) {
   .nav-desktop {
     display: none !important;
   }
@@ -42,54 +55,40 @@ body {
     justify-content: center;
   }
 
-  /* Табы: включаем горизонтальную прокрутку, если не влезают */
-  .custom-tabs .ant-tabs-nav-wrap {
+  /* Табы теперь будут прокручиваться ВНУТРИ себя, не толкая весь сайт */
+  .ant-tabs-nav-wrap {
     overflow-x: auto !important;
-    display: block !important;
-  }
-  .custom-tabs .ant-tabs-nav-list {
-    white-space: nowrap !important;
-    display: flex !important;
   }
 }
 
+/* Карточки услуг */
 .service-card {
+  width: 100%;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid #f0f0f0 !important;
+  box-sizing: border-box;
 }
+
 .service-img {
   height: 200px;
   object-fit: cover;
   width: 100%;
 }
 
+/* Кнопка WhatsApp */
 .wa-button {
   position: fixed;
   bottom: 20px;
   right: 20px;
   background: #25d366;
-  width: 60px;
-  height: 60px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
+  font-size: 28px;
   z-index: 9999;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.fade-in {
-  animation: fadeIn 0.8s ease-in-out;
-}
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
