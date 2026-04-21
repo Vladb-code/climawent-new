@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Spin, Tabs, ConfigProvider } from "antd";
+import { Typography, Spin, Tabs, ConfigProvider, Segmented } from "antd";
 import { client } from "../sanityClient";
 import ServiceGrid from "../components/ServiceGrid";
 import AboutCompany from "./AboutCompany.jsx";
@@ -9,6 +9,7 @@ export default function Dashboard() {
   const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [systemType, setSystemType] = useState("ac"); // 'ac' или 'vent'
 
   useEffect(() => {
     client
@@ -27,27 +28,38 @@ export default function Dashboard() {
       <Spin size="large" style={{ display: "block", margin: "100px auto" }} />
     );
 
-  const getItems = (type, category = null) => {
-    return data.filter(
-      (i) => i._type === type && (category ? i.category === category : true),
-    );
+  // Фильтрация: проверяем тип документа + тип системы (ac/vent) + категорию (установка/ремонт)
+  const getItems = (type, category = null, system = null) => {
+    return data.filter((i) => {
+      const isType = i._type === type;
+      // Если system указан, проверяем поле system_type в Sanity
+      const isSystem = system ? i.system_type === system : true;
+      const isCategory = category ? i.category === category : true;
+      return isType && isSystem && isCategory;
+    });
   };
 
-  const serviceTabs = [
+  const dynamicTabs = [
     {
       key: "inst",
       label: t("nav_installation"),
-      children: <ServiceGrid items={getItems("service", "installation")} />,
+      children: (
+        <ServiceGrid items={getItems("service", "installation", systemType)} />
+      ),
     },
     {
       key: "rep",
       label: t("nav_service"),
-      children: <ServiceGrid items={getItems("service", "repair")} />,
+      children: (
+        <ServiceGrid items={getItems("service", "repair", systemType)} />
+      ),
     },
     {
       key: "cln",
       label: t("nav_cleaning"),
-      children: <ServiceGrid items={getItems("service", "cleaning")} />,
+      children: (
+        <ServiceGrid items={getItems("service", "cleaning", systemType)} />
+      ),
     },
   ];
 
@@ -64,18 +76,32 @@ export default function Dashboard() {
 
       <div className="main-content-card">
         <div id="services">
+          <div className="system-selector-container">
+            <Segmented
+              block
+              size="large"
+              value={systemType}
+              onChange={(value) => setSystemType(value)}
+              options={[
+                { label: t("system_ac"), value: "ac" },
+                { label: t("system_vent"), value: "vent" },
+              ]}
+              style={{ maxWidth: 500, width: "100%" }}
+            />
+          </div>
+
           <ConfigProvider theme={{ token: { colorPrimary: "#1890ff" } }}>
             <Tabs
               defaultActiveKey="inst"
-              items={serviceTabs}
-              centered // ВСЕГДА ПО ЦЕНТРУ
+              activeKey={undefined} // позволяет переключать табы внутри
+              items={dynamicTabs}
+              centered
               size="large"
-              tabBarGutter={30}
               className="centered-tabs"
             />
           </ConfigProvider>
         </div>
-        {/* ... остальные блоки (portfolio, contracts, about) остаются как были */}
+
         <div
           id="portfolio"
           style={{ padding: "60px 0 20px", borderTop: "1px solid #f0f0f0" }}
@@ -84,10 +110,14 @@ export default function Dashboard() {
             level={3}
             style={{ textAlign: "center", marginBottom: 25 }}
           >
-            {t("nav_portfolio")}
+            {t("nav_portfolio")} (
+            {systemType === "ac" ? t("system_ac") : t("system_vent")})
           </Typography.Title>
-          <ServiceGrid items={getItems("portfolio").slice(0, 4)} />
+          <ServiceGrid
+            items={getItems("portfolio", null, systemType).slice(0, 4)}
+          />
         </div>
+
         <div
           id="contracts"
           style={{ padding: "40px 0", borderTop: "1px solid #f0f0f0" }}
@@ -100,6 +130,7 @@ export default function Dashboard() {
           </Typography.Title>
           <ServiceGrid items={getItems("contract")} />
         </div>
+
         <div
           id="about"
           style={{ padding: "40px 0", borderTop: "1px solid #f0f0f0" }}

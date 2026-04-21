@@ -155,3 +155,29 @@ body {
   max-width: 1200px;
   margin: 0 auto;
 }
+
+/* Добавь это в конец своего index.css */
+
+.ant-segmented {
+  background: #f0f2f5 !important;
+  padding: 4px !important;
+  border-radius: 12px !important;
+}
+
+.ant-segmented-item-selected {
+  background-color: #fff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 10px !important;
+}
+
+.ant-segmented-item-label {
+  font-weight: 600 !important;
+  color: #555 !important;
+}
+
+.system-selector-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  padding: 0 15px;
+}
